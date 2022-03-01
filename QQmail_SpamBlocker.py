@@ -5,9 +5,9 @@ import time
 import winreg
 import requests
 
-os.environ['no_proxy'] = '*'
+os.environ['no_proxy'] = '*' #避免因系统代理设置导致请求失败
 
-def syscheck():
+def syscheck(): #判断系统版本是否支持、是否存在失败列表，若有失败列表则优先拉黑失败列表，若无失败列表则使用内置黑名单提交拉黑
     if os.name == 'nt':
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders')
         desktop_path = winreg.QueryValueEx(key,'Desktop')[0]
@@ -49,15 +49,15 @@ def v1block(block_list,sid,cookie):
         if fail_times > 2:
             fail_list.append(mail_addr)
         else:
-            time.sleep(2)
             req = requests.post(url=url,data=data,headers=headers)
             content_length = len(req.content)
-            if content_length != 604:
+            if content_length != 604: #QQ邮箱拉黑操作成功返回的内容长度是固定的，以此判断是否成功
                 print('\n%s 拉黑失败，继续操作中……'%mail_addr)
                 fail_times += 1
                 fail_list.append(mail_addr)
             else:
                 print('\n第%i个邮箱 %s 已拉黑！'%(i+1,mail_addr))
+                time.sleep(2) #避免请求过快，每次请求间隔2秒
     fail(fail_list)
     return
 
@@ -86,14 +86,14 @@ def v2block(block_list,sid,cookie,r):
         if fail_times > 2:
             fail_list.append(mail_addr)
         else:
-            time.sleep(2)
             req = requests.post(url=url,data=data,headers=headers).json()['head']
-            if req['ret'] != 0:
+            if req['ret'] != 0: #新版QQ邮箱拉黑成功返回的ret参数是0
                 print('\n%s 拉黑失败，继续操作中……错误信息：%s'%(mail_addr,req['msg']))
                 fail_times += 1
                 fail_list.append(mail_addr)
             else:
                 print('\n第%i个邮箱 %s 已拉黑！'%(i+1,mail_addr))
+                time.sleep(2) #避免请求过快，每次请求间隔2秒
     fail(fail_list)
     return 
 
@@ -121,7 +121,7 @@ if __name__ == '__main__':
             v1block(block_list,sid,cookie)
         elif select_ver == '2':
             r = input('\n请输入参数r的数据：')
-            while len(r)<26:
+            while len(r) < 26:
                 r = input('\n参数错误，请重新输入参数r的数据：')
             v2block(block_list,sid,cookie,r)
         else:
