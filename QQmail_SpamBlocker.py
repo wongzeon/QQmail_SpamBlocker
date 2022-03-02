@@ -24,10 +24,6 @@ def syscheck(): #判断系统版本是否支持、是否存在失败列表，若
 
 def v1block(block_list,sid,cookie):
     headers = {
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-        "Content-Type": "application/x-www-form-urlencoded",
         "Cookie": "%s"%cookie,
         "Host": "mail.qq.com",
         "Origin": "https://mail.qq.com",
@@ -52,21 +48,16 @@ def v1block(block_list,sid,cookie):
             req = requests.post(url=url,data=data,headers=headers)
             content_length = len(req.content)
             if content_length != 604: #QQ邮箱拉黑操作成功返回的内容长度是固定的，以此判断是否成功
-                print('\n%s 拉黑失败，继续操作中……'%mail_addr)
+                print('\n第%i个邮箱 %s 拉黑失败，继续操作中……'%(i+1,mail_addr))
                 fail_times += 1
                 fail_list.append(mail_addr)
             else:
                 print('\n第%i个邮箱 %s 已拉黑！'%(i+1,mail_addr))
-                time.sleep(2) #避免请求过快，每次请求间隔2秒
+                time.sleep(2)
     fail(fail_list)
-    return
 
 def v2block(block_list,sid,cookie,r):
     headers = {
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-        "Content-Type": "application/x-www-form-urlencoded",
         "Cookie": "%s"%cookie,
         "Host": "wx.mail.qq.com",
         "Origin": "https://wx.mail.qq.com",
@@ -88,14 +79,13 @@ def v2block(block_list,sid,cookie,r):
         else:
             req = requests.post(url=url,data=data,headers=headers).json()['head']
             if req['ret'] != 0: #新版QQ邮箱拉黑成功返回的ret参数是0
-                print('\n%s 拉黑失败，继续操作中……错误信息：%s'%(mail_addr,req['msg']))
+                print('\n第%i个邮箱 %s 拉黑失败，继续操作中……错误信息：%s'%(i+1,mail_addr,req['msg']))
                 fail_times += 1
                 fail_list.append(mail_addr)
             else:
                 print('\n第%i个邮箱 %s 已拉黑！'%(i+1,mail_addr))
-                time.sleep(2) #避免请求过快，每次请求间隔2秒
+                time.sleep(2)
     fail(fail_list)
-    return 
 
 def fail(fail_list):
     total = len(fail_list)
