@@ -29,7 +29,7 @@ def v1block(block_list,sid,cookie):
         "Host": "mail.qq.com",
         "Origin": "https://mail.qq.com",
         "Referer": "https://mail.qq.com/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56"
     }
     url = 'https://mail.qq.com/cgi-bin/config_blackwhitelist?sid=%s'%sid
     fail_list = []
@@ -63,7 +63,7 @@ def v2block(block_list,sid,cookie,r):
         "Host": "wx.mail.qq.com",
         "Origin": "https://wx.mail.qq.com",
         "Referer": "https://wx.mail.qq.com/",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56"
     }
     url = 'https://wx.mail.qq.com/setting/blackwhitelist?sid=%s&r=%s'%(sid,r)
     fail_list = []
