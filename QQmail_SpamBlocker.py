@@ -4,6 +4,7 @@ import os
 import time
 import winreg
 import requests
+#项目地址：https://github.com/wongzeon/QQmail_SpamBlocker
 
 os.environ['no_proxy'] = '*' #避免因系统代理设置导致请求失败
 
